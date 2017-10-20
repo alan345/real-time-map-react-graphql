@@ -1,90 +1,147 @@
-# React & GraphQL examples
+# Subscriptions Example (with React & Apollo)
 
-Code examples & starter kits to see how React works with GraphQL and other technologies.
+A realtime chat application that displays the locations of all the chat participants on a map.
 
-<hr>
+![Worldchat](http://i.imgur.com/8cpv7Hi.png)
 
-**<p align="center">Select an example** from the list above to get started ⤴️</p>
+* [React](https://facebook.github.io/react/): Frontend framework for building user interfaces
+* [Apollo Client](https://github.com/apollographql/apollo-client): Fully-featured, production ready caching GraphQL client
+* [Graphcool](https://www.graph.cool): Flexible backend platform combining GraphQL + AWS Lambda
 
-<hr>
+## Getting Started
 
-<p align="center"><img src="http://imgur.com/G9mMBFT.png" /></p>
+Subscriptions allow you to bring realtime functionality into your app. You can learn more about subscriptions in our [docs](https://www.graph.cool/docs/reference/simple-api/subscriptions-aip7oojeiv/).
 
-The examples above cover the following technologies:
 
-* [GraphQL](http://graphql.org/)
-* [Apollo Client](http://dev.apollodata.com/react/)
-* [Relay Modern/Relay Classic](https://facebook.github.io/relay/)
-* [Auth0 Lock](https://github.com/auth0/lock)
-* [GraphQL subscriptions](https://www.graph.cool/docs/reference/simple-api/subscriptions-aip7oojeiv/)
-* [File upload](https://www.graph.cool/docs/reference/file-handling/overview-eer4wiang0/)
-* ...
+### 1. Clone example repository
 
-> Are you looking for another example? [Request it here](https://github.com/graphcool-examples/react-graphql/issues/new).
+```sh
+git clone https://github.com/graphcool-examples/react-graphql.git
+cd react-graphql/subscriptions-with-apollo-worldchat
+```
 
-## Tutorials
+### 2. Create Graphcool service with the [Graphcool CLI](https://docs-next.graph.cool/reference/graphcool-cli/overview-zboghez5go)
 
-* [How to use `create-react-app` with GraphQL & Apollo](https://www.graph.cool/docs/tutorials/create-react-apps-with-apollo-client-aidae4aeg5/)
-* [Freecom: Building Intercom with GraphQL and Apollo](https://www.graph.cool/docs/tutorials/freecom-overview-intercom-tutorial-e8a6ajt8ax/)
-* [User Authentication with Auth0 for React and Apollo](https://www.graph.cool/docs/tutorials/react-apollo-auth0-pheiph4ooj/)
-* [Learn Relay](https://www.learnrelay.org/) / [Learn Apollo](https://www.learnapollo.com/)
+```sh
+# Install Graphcool Framework CLI
+npm install -g graphcool@next
 
-## Contributors
+# Create a new service inside a directory called `server`
+graphcool init server
+```
 
-A big thank you to all contributors and supporters of this repository 💚 
+This created the following file structure in the current directory:
 
-<a href="https://github.com/nikolasburk/" target="_blank">
-  <img src="https://github.com/nikolasburk.png?size=64" width="64" height="64" alt="nikolasburk">
-</a>
-<a href="https://github.com/schickling/" target="_blank">
-  <img src="https://github.com/schickling.png?size=64" width="64" height="64" alt="schickling">
-</a>
-<a href="https://github.com/marktani/" target="_blank">
-  <img src="https://github.com/marktani.png?size=64" width="64" height="64" alt="marktani">
-</a>
-<a href="https://github.com/stubailo/" target="_blank">
-  <img src="https://github.com/stubailo.png?size=64" width="64" height="64" alt="stubailo">
-</a>
-<a href="https://github.com/kuldarkalvik/" target="_blank">
-  <img src="https://github.com/kuldarkalvik.png?size=64" width="64" height="64" alt="kuldarkalvik">
-</a>
-<a href="https://github.com/gsans/" target="_blank">
-  <img src="https://github.com/gsans.png?size=64" width="64" height="64" alt="gsans">
-</a>
-<a href="https://github.com/kbrandwijk/" target="_blank">
-  <img src="https://github.com/kbrandwijk.png?size=64" width="64" height="64" alt="kbrandwijk">
-</a>
-<a href="https://github.com/fresh5447/" target="_blank">
-  <img src="https://github.com/fresh5447.png?size=64" width="64" height="64" alt="fresh5447">
-</a>
-<a href="https://github.com/sebasibarguen/" target="_blank">
-  <img src="https://github.com/sebasibarguen.png?size=64" width="64" height="64" alt="sebasibarguen">
-</a>
-<a href="https://github.com/heymartinadams/" target="_blank">
-  <img src="https://github.com/heymartinadams.png?size=64" width="64" height="64" alt="heymartinadams">
-</a>
-<a href="https://github.com/100ideas/" target="_blank">
-  <img src="https://github.com/100ideas.png?size=64" width="64" height="64" alt="100ideas">
-</a>
-<a href="https://github.com/brene/" target="_blank">
-  <img src="https://github.com/brene.png?size=64" width="64" height="64" alt="brene">
-</a>
-<a href="https://github.com/chrisgchambers/" target="_blank">
-  <img src="https://github.com/chrisgchambers.png?size=64" width="64" height="64" alt="chrisgchambers">
-</a>
-<a href="https://github.com/wesbos/" target="_blank">
-  <img src="https://github.com/wesbos.png?size=64" width="64" height="64" alt="wesbos">
-</a>
-<a href="https://github.com/jurosh/" target="_blank">
-  <img src="https://github.com/jurosh.png?size=64" width="64" height="64" alt="jurosh">
-</a>
-<a href="https://github.com/mstruebing/" target="_blank">
-  <img src="https://github.com/mstruebing.png?size=64" width="64" height="64" alt="mstruebing">
-</a>
+```
+.
+└── server
+    ├── graphcool.yml
+    ├── types.graphql
+    └── src
+        ├── hello.graphql
+        └── hello.js
+```
+
+### 3. Define data model
+
+Next, you need to define your data model inside the newly created `types.graphql`-file.
+
+Replace the current contents in `types.graphql` with the following type definition (you can delete the predefined `User` type):
+
+```graphql
+type Traveller @model {
+  # Required system field
+  id: ID! @isUnique # read-only (managed by Graphcool)
+
+  # Optional system fields (remove if not needed)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+
+  name: String!
+  location: Location! @relation(name: "TravellerLocation")
+  messages: [Message!]! @relation(name: "MessagesFromTraveller")
+}
+
+type Message @model {
+  # Required system field
+  id: ID! @isUnique # read-only (managed by Graphcool)
+
+  # Optional system fields (remove if not needed)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+
+  text: String!
+  sentBy: Traveller!  @relation(name: "MessagesFromTraveller")
+}
+
+type Location @model {
+  # Required system field
+  id: ID! @isUnique # read-only (managed by Graphcool)
+
+  # Optional system fields (remove if not needed)
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+
+  traveller: Traveller! @relation(name: "TravellerLocation")
+  latitude: Float!
+  longitude: Float!
+}
+```
+
+### 4. Deploy the GraphQL server
+
+You're now ready to put your Graphcool service into production! Navigate into the `server` directory and [deploy](https://docs-next.graph.cool/reference/graphcool-cli/commands-aiteerae6l#graphcool-deploy) the service:
+
+```sh
+cd server
+graphcool deploy
+```
+
+Save the HTTP endpoint for the `Simple API` from the output as well as the websocket endpoint for the `Subscriptions API`, you'll need them in the next step.
+
+> **Note**: You can now test your GraphQL API inside a GraphQL playground. Simply type the `graphcool playground` command and start sending queries and mutations.
+
+### 5. Connect the app with your GraphQL API
+
+#### 5.1. Simple API
+
+Copy the `Simple API` endpoint to `./src/App.js` as the `uri` argument in the `createNetworkInterface` call:
+
+```js
+const networkInterface = createNetworkInterface({ uri: '__SIMPLE_API_ENDPOINT__' })
+```
+
+#### 5.2. Subscriptions API
+
+Copy the `Subscriptions API` endpoint to `./src/App.js` as the argument for the constructor of the `SubscriptionClient`:
+
+```js
+const wsClient = new SubscriptionClient('__SUBSCRIPTIONS_API_ENDPOINT__')
+```
+
+> **Note**: If you ever lose your endpoints, you can get access to them again with the `graphcool info` command.
+
+### 6. Install dependencies & run locally
+
+You're done configuring the example application. 
+
+```sh
+yarn install
+yarn start # open browser with: http://localhost:3000
+```
+
+### 7. Further resources
+
+This app demonstrates how to use the Graphcool subscription API using Apollo Client. You can learn more about these technologies here:
+
+- [**Tutorial:** How to build a Real-Time Chat with GraphQL Subscriptions and Apollo](https://www.graph.cool/docs/tutorials/worldchat-subscriptions-example-ui0eizishe/)
+- [**Video:** How to build a Real-Time Chat with GraphQL Subscriptions and Apollo](https://www.youtube.com/watch?v=aSLF9f13o2c)
+- [**Docs:** Using GraphQL Subscriptions with Graphcool](https://www.graph.cool/docs/reference/simple-api/generated-subscriptions-aip7oojeiv)
+- [**Blog Post**: GraphQL Subscriptions in Apollo Client](https://dev-blog.apollodata.com/graphql-subscriptions-in-apollo-client-9a2457f015fb#.458zrl2u7)
+
 
 ## Help & Community [![Slack Status](https://slack.graph.cool/badge.svg)](https://slack.graph.cool)
 
 Say hello in our [Slack](http://slack.graph.cool/) or visit the [Graphcool Forum](https://www.graph.cool/forum) if you run into issues or have questions. We love talking to you!
 
 ![](http://i.imgur.com/5RHR6Ku.png)
-
