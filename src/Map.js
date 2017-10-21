@@ -28,7 +28,7 @@ const client = new ApolloClient({
 
 const WORLDCHAT_USERNAME_KEY = 'WORLDCHAT_USERNAME'
 
-class App extends Component {
+class Map extends Component {
 
   componentWillMount() {
 
@@ -56,4 +56,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default Map
