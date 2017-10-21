@@ -5,6 +5,13 @@ import generateStupidName from 'sillyname'
 import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws'
 
 
+
+import { graphql, gql } from 'react-apollo'
+import { withRouter } from 'react-router'
+
+
+
+
 // __SUBSCRIPTIONS_API_ENDPOINT__ looks similar to: `wss://subscriptions.graph.cool/v1/<PROJECT_ID>`
 const wsClient = new SubscriptionClient('wss://subscriptions.us-west-2.graph.cool/v1/cj90b2ci30ltz01224xorvd43', {
   reconnect: true,
@@ -28,9 +35,15 @@ const client = new ApolloClient({
 
 const WORLDCHAT_USERNAME_KEY = 'WORLDCHAT_USERNAME'
 
-class Map extends Component {
+class Map extends React.Component {
 
-  componentWillMount() {
+  _isLoggedIn = () => {
+    return this.props.data.loggedInUser && this.props.data.loggedInUser.id !== null
+  }
+
+  componentWillMount(
+
+  ) {
 
     // testing
     // localStorage.removeItem(WORLDCHAT_USERNAME_KEY)
@@ -46,6 +59,8 @@ class Map extends Component {
   }
 
   render() {
+
+    // console.log(this._isLoggedIn())
     return (
       <ApolloProvider client={client}>
         <WorldChat

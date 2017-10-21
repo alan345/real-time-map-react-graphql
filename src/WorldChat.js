@@ -109,6 +109,7 @@ class WorldChat extends Component {
     location: undefined,
   }
 
+
   async componentDidMount() {
 
     this.locationSubscription = this.props.allLocationsQuery.subscribeToMore({
@@ -337,6 +338,7 @@ class WorldChat extends Component {
   render() {
     return (
       <div style={{height: `100%`}}>
+
         <WorldChatGoogleMap
           googleMapURL='https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCedl-z2FCu87QocGvWB_GW0mLBPiy7-Kg'
           loadingElement={
@@ -357,6 +359,7 @@ class WorldChat extends Component {
           onMarkerClose={this.handleMarkerClose}
         />
         <Banner />
+
         <Chat
           travellerId={this.state.travellerId}
         />
