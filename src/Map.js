@@ -63,6 +63,9 @@ class Map extends React.Component {
     // console.log(this._isLoggedIn())
     return (
       <ApolloProvider client={client}>
+        <span>
+          User ID: {this.props.data.loggedInUser.id}
+        </span>
         <WorldChat
           name={localStorage.getItem(WORLDCHAT_USERNAME_KEY)}
         />
@@ -71,4 +74,12 @@ class Map extends React.Component {
   }
 }
 
-export default Map
+const userQuery = gql`
+  query {
+    loggedInUser {
+      id
+    }
+  }
+`
+
+export default graphql(userQuery, { options: {fetchPolicy: 'network-only'}})(withRouter(Map))
