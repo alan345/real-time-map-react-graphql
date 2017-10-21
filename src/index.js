@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Map from './Map';
+import CreateUser from './components/CreateUser'
+import LoginUser from './components/LoginUser'
 import './index.css';
 import { Router, Route, browserHistory } from 'react-router'
 import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo'
@@ -15,7 +17,8 @@ ReactDOM.render(
   <ApolloProvider client={client}>
   <Router history={browserHistory}>
     <Route path='/' component={Map} />
-    <Route path='create' component={Map} />
+    <Route path='login' component={LoginUser} />
+    <Route path='signup' component={CreateUser} />
   </Router>
   </ApolloProvider>,
   document.getElementById('root')
