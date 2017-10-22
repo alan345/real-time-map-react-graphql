@@ -9,7 +9,7 @@ import { Router, Route, browserHistory } from 'react-router'
 import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo'
 
 
-const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj90jghsc0ld701749s7lmky7' })
+const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj92pvw0b0uqj011653p93h87' })
 
 networkInterface.use([{
   applyMiddleware (req, next) {

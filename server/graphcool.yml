@@ -26,18 +26,68 @@ functions:
     schema: src/hello.graphql
 
 
+# added by email-password template:
+  signup:
+    type: resolver
+    schema: src/email-password/signup.graphql
+    handler:
+      code: src/email-password/signup.js
+
+  authenticate:
+    type: resolver
+    schema: src/email-password/authenticate.graphql
+    handler:
+      code: src/email-password/authenticate.js
+
+  loggedInUser:
+    type: resolver
+    schema: src/email-password/loggedInUser.graphql
+    handler:
+      code: src/email-password/loggedInUser.js
+
+
+
+
 # Model/Relation permissions are used to limit the API access
-# To take the burden of thinking about those while development, we 
+# To take the burden of thinking about those while development, we
 # preconfigured the wildcard ("*") permission that allows everything
 # Read more here:
 # https://docs-next.graph.cool/reference/auth/authorization/overview-iegoo0heez
 permissions:
-- operation: "*"
 
-  
+
+- operation: Post.read
+  # Only authenticated users can create posts
+- operation: Post.create
+  authenticated: true
+  # Only the author of a post can update it
+- operation: Post.update
+  authenticated: true
+  query: ./permissions/updateOrDeletePost.graphql
+  # Only the author of a post can delete it
+- operation: Post.delete
+  authenticated: true
+  query: ./permissions/updateOrDeletePost.graphql
+  # Everyone can read the id, name and email fields of users
+- operation: User.read
+  fields:
+    - id
+    - name
+    - email
+  # Only authenticated users can create relation between a user and a post
+- operation: UserPosts.connect
+  authenticated: true
+
+
+# Your root tokens used for functions to get full access to the API
+# Read more here:
+# https://docs-next.graph.cool/reference/auth/authentication/authentication-tokens-eip7ahqu5o
+rootTokens:
+- mytoken
+
+
 # Your root tokens used for functions to get full access to the API
 # Read more here:
 # https://docs-next.graph.cool/reference/auth/authentication/authentication-tokens-eip7ahqu5o
 # rootTokens:
 # - mytoken
-

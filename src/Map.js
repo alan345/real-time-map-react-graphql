@@ -13,13 +13,13 @@ import { withRouter } from 'react-router'
 
 
 // __SUBSCRIPTIONS_API_ENDPOINT__ looks similar to: `wss://subscriptions.graph.cool/v1/<PROJECT_ID>`
-const wsClient = new SubscriptionClient('wss://subscriptions.us-west-2.graph.cool/v1/cj90b2ci30ltz01224xorvd43', {
+const wsClient = new SubscriptionClient('wss://subscriptions.us-west-2.graph.cool/v1/cj92pvw0b0uqj011653p93h87', {
   reconnect: true,
   timeout: 20000
 })
 
 // __SIMPLE_API_ENDPOINT__ looks similar to: `https://api.graph.cool/simple/v1/<PROJECT_ID>`
-const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj90b2ci30ltz01224xorvd43' })
+const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj92pvw0b0uqj011653p93h87' })
 
 // Extend the network interface with the WebSocket
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
@@ -60,12 +60,10 @@ class Map extends React.Component {
 
   render() {
 
-    // console.log(this._isLoggedIn())
+    console.log(this.props)
     return (
       <ApolloProvider client={client}>
-        <span>
-          User ID: {this.props.data.loggedInUser.id}
-        </span>
+
         <WorldChat
           name={localStorage.getItem(WORLDCHAT_USERNAME_KEY)}
         />
